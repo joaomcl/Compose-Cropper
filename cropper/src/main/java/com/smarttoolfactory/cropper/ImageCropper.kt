@@ -100,6 +100,8 @@ fun ImageCropper(
         val contentScale = cropProperties.contentScale
         val fixedAspectRatio = cropProperties.fixedAspectRatio
         val cropOutline = cropProperties.cropOutlineProperty.cropOutline
+        val maskCropOutline = cropProperties.maskOverlayOutlineProperty?.cropOutline
+            ?: cropProperties.cropOutlineProperty.cropOutline
 
         // these keys are for resetting cropper when image width/height, contentScale or
         // overlay aspect ratio changes
@@ -127,7 +129,7 @@ fun ImageCropper(
             }
         }
 
-        val pressedStateColor = remember(cropStyle.backgroundColor){
+        val pressedStateColor = remember(cropStyle.backgroundColor) {
             cropStyle.backgroundColor
                 .copy(cropStyle.backgroundColor.alpha * .7f)
         }
@@ -179,6 +181,7 @@ fun ImageCropper(
             overlayRect = cropState.overlayRect,
             cropType = cropType,
             cropOutline = cropOutline,
+            maskCropOutline = maskCropOutline,
             cropStyle = cropStyle,
             transparentColor = transparentColor,
             backgroundColor = backgroundColor,
@@ -200,6 +203,7 @@ private fun ImageCropper(
     handleSize: Float,
     cropType: CropType,
     cropOutline: CropOutline,
+    maskCropOutline: CropOutline,
     cropStyle: CropStyle,
     overlayRect: Rect,
     transparentColor: Color,
@@ -226,6 +230,7 @@ private fun ImageCropper(
                 imageHeightPx = imageHeightPx,
                 cropType = cropType,
                 cropOutline = cropOutline,
+                maskCropOutline = maskCropOutline,
                 handleSize = handleSize,
                 cropStyle = cropStyle,
                 rectOverlay = overlayRect,
@@ -263,6 +268,7 @@ private fun ImageCropperImpl(
     imageHeightPx: Int,
     cropType: CropType,
     cropOutline: CropOutline,
+    maskCropOutline: CropOutline,
     handleSize: Float,
     cropStyle: CropStyle,
     transparentColor: Color,
@@ -292,7 +298,7 @@ private fun ImageCropperImpl(
             modifier = Modifier.size(containerWidth, containerHeight),
             drawOverlay = drawOverlay,
             rect = rectOverlay,
-            cropOutline = cropOutline,
+            cropOutline = maskCropOutline,
             drawGrid = drawGrid,
             overlayColor = overlayColor,
             handleColor = handleColor,
